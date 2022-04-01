@@ -59,9 +59,9 @@ const RandomNumber = () => {
     </View>
     </View>
   )
-
+  };
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/adhithiravi/React-Hooks-Examples/master/testAPI.json')
+    fetch('https://randomuser.me/api/?results=100&inc=name')
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => console.error(error))
@@ -73,13 +73,12 @@ const RandomNumber = () => {
     <View style={{ flex: 1, padding: 24 }}>
       {isLoading ? <Text>Loading...</Text> : 
       ( <View style={{ flex: 1, flexDirection: 'column', justifyContent:  'space-between'}}>
-          <Text style={{ fontSize: 18, color: 'green', textAlign: 'center'}}>{data.title}</Text>
-          <Text style={{ fontSize: 14, color: 'green', textAlign: 'center', paddingBottom: 10}}>Articles:</Text>
+          <Text style={{ fontSize: 14, color: 'green', textAlign: 'center', paddingBottom: 10}}>Users:</Text>
           <FlatList
-            data={data.articles}
-            keyExtractor={({ id }, index) => id}
+            data={data.results}
+            keyExtractor={({ name }, index) => name}
             renderItem={({ item }) => (
-              <Text>{item.id + '. ' + item.title}</Text>
+              <Text>{item.name + '. ' + item.title}</Text>
             )}
           />
         </View>
