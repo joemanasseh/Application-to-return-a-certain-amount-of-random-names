@@ -21,7 +21,8 @@ import {
   Button,
   Alert,
   ActivityIndicator, 
-  FlatList
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
@@ -34,10 +35,9 @@ import {
 
 
 
-const RandomNumber = () => {
+function RandomNumber()  {
 
   const [number, onNumber] = React.useState(null);
-  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
   return (
@@ -54,13 +54,21 @@ const RandomNumber = () => {
       <Button
         title="Send Value"
         color="#00008b"
-        onPress={ApiCall}
-      />
+       onClick={() => getApi()}>
+
+        </Button>
+      
     </View>
     </View>
   )
+}
+
+function getApi() {
+
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  console.log(data);
   
-  const ApiCall = () => {
     useEffect(() => {
       fetch('https://randomuser.me/api/?results=100&inc=name')
         .then((response) => response.json())
@@ -74,21 +82,20 @@ const RandomNumber = () => {
       <View style={{ flex: 1, padding: 24 }}>
         {isLoading ? <Text>Loading...</Text> : 
         ( <View style={{ flex: 1, flexDirection: 'column', justifyContent:  'space-between'}}>
-            <Text style={{ fontSize: 14, color: 'green', textAlign: 'center', paddingBottom: 10}}>Users:</Text>
+            <Text style={{ fontSize: 14, color: 'green', textAlign: 'center', paddingBottom: 10}}>Random Users</Text>
             <FlatList
               data={data.results}
-              keyExtractor={({ name }, index) => name}
+              keyExtractor={({ name }) => name}
               renderItem={({ item }) => (
-                <Text>{item.name + '. ' + item.title}</Text>
+                <Text>{item.title + '. ' + item.first}</Text>
               )}
             />
           </View>
         )}
       </View>
     );
-  }
+  
 };
-
 
 
 const styles = StyleSheet.create({
@@ -105,11 +112,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
   },
   textItem: {
     fontWeight: '700',
